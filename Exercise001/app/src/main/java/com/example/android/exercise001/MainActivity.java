@@ -99,6 +99,19 @@ public class MainActivity extends AppCompatActivity {
         // Set the intent that will fire when the user taps the notification.
         builder.setContentIntent(pendingIntent);
 
+        // Build an intent for an action to view a map
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW);
+        Uri geoUri = Uri.parse("geo:0,0?q=" + Uri.encode("07871"));
+        mapIntent.setData(geoUri);
+        PendingIntent mapPendingIntent =
+                PendingIntent.getActivity(this, 0, mapIntent, 0);
+
+        NotificationCompat.Action.Builder actionBuilder = new NotificationCompat.Action.Builder(
+                R.drawable.ic_stat_notification,
+                getString(R.string.map), mapPendingIntent);
+
+        builder.addAction(actionBuilder.build());
+
         // Set the notification to auto-cancel. This means that the notification will disappear
         // after the user taps it, rather than remaining until it's explicitly dismissed.
         builder.setAutoCancel(true);
