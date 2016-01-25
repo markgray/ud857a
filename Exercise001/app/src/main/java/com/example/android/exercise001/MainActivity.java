@@ -127,6 +127,20 @@ public class MainActivity extends AppCompatActivity {
 
         // END_INCLUDE (build_notification)
 
+        // Build an intent for an action to view a map
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW);
+        Uri geoUri = Uri.parse("geo:0,0?q=" + Uri.encode("07871"));
+        mapIntent.setData(geoUri);
+        PendingIntent mapPendingIntent =
+                PendingIntent.getActivity(this, 0, mapIntent, 0);
+
+        NotificationCompat.Action.Builder actionBuilder = new NotificationCompat.Action.Builder(
+                R.drawable.ic_stat_notification,
+                getString(R.string.map), mapPendingIntent);
+
+        builder.addAction(actionBuilder.build());
+
+
         // Get an instance of the NotificationManager service
         NotificationManagerCompat notificationManager =
                 NotificationManagerCompat.from(this);
