@@ -96,25 +96,6 @@ public class MainActivity extends AppCompatActivity {
          */
         builder.setSmallIcon(R.drawable.ic_stat_notification);
 
-        // Set the intent that will fire when the user taps the notification.
-        builder.setContentIntent(pendingIntent);
-
-        // Build an intent for an action to view a map
-        Intent mapIntent = new Intent(Intent.ACTION_VIEW);
-        Uri geoUri = Uri.parse("geo:0,0?q=" + Uri.encode("07871"));
-        mapIntent.setData(geoUri);
-        PendingIntent mapPendingIntent =
-                PendingIntent.getActivity(this, 0, mapIntent, 0);
-
-        NotificationCompat.Action.Builder actionBuilder = new NotificationCompat.Action.Builder(
-                R.drawable.ic_stat_notification,
-                getString(R.string.map), mapPendingIntent);
-
-        builder.addAction(actionBuilder.build());
-
-        // Set the notification to auto-cancel. This means that the notification will disappear
-        // after the user taps it, rather than remaining until it's explicitly dismissed.
-        builder.setAutoCancel(true);
 
         /**
          *Build the notification's appearance.
@@ -137,15 +118,25 @@ public class MainActivity extends AppCompatActivity {
         builder.setContentText("Time to learn about notifications!");
         builder.setSubText("Tap to view documentation about notifications.");
 
+        // Set the notification to auto-cancel. This means that the notification will disappear
+        // after the user taps it, rather than remaining until it's explicitly dismissed.
+        builder.setAutoCancel(true);
+
+        // Set the intent that will fire when the user taps the notification.
+        builder.setContentIntent(pendingIntent);
+
         // END_INCLUDE (build_notification)
+
+        // Get an instance of the NotificationManager service
+        NotificationManagerCompat notificationManager =
+                NotificationManagerCompat.from(this);
 
         // BEGIN_INCLUDE(send_notification)
         /**
          * Send the notification. This will immediately display the notification icon in the
          * notification bar.
          */
-        NotificationManager notificationManager = (NotificationManager) getSystemService(
-                NOTIFICATION_SERVICE);
+
         notificationManager.notify(NOTIFICATION_ID, builder.build());
         // END_INCLUDE(send_notification)
     }
