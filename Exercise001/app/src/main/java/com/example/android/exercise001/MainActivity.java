@@ -1,6 +1,5 @@
 package com.example.android.exercise001;
 
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
@@ -15,7 +14,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
-import android.support.v4.app.NotificationCompat.WearableExtender;
 
 public class MainActivity extends AppCompatActivity {
     /**
@@ -136,10 +134,24 @@ public class MainActivity extends AppCompatActivity {
 
         NotificationCompat.Action.Builder actionBuilder = new NotificationCompat.Action.Builder(
                 R.drawable.ic_stat_notification,
-                getString(R.string.map), mapPendingIntent);
+                getString(R.string.map_07871), mapPendingIntent);
 
         builder.addAction(actionBuilder.build());
 
+        // Add a wearable only action
+        mapIntent = new Intent(Intent.ACTION_VIEW);
+        geoUri = Uri.parse("geo:0,0?q=" + Uri.encode("01431"));
+        mapIntent.setData(geoUri);
+        mapPendingIntent =
+                PendingIntent.getActivity(this, 0, mapIntent, 0);
+
+        // Create the action
+        NotificationCompat.Action action =
+                new NotificationCompat.Action.Builder(R.drawable.ic_stat_notification,
+                        getString(R.string.map_01431), mapPendingIntent)
+                        .build();
+
+        builder.extend(new NotificationCompat.WearableExtender().addAction(action));
 
         // Get an instance of the NotificationManager service
         NotificationManagerCompat notificationManager =
