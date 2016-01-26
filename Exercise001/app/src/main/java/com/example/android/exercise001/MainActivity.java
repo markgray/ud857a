@@ -1,5 +1,6 @@
 package com.example.android.exercise001;
 
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
@@ -138,6 +139,26 @@ public class MainActivity extends AppCompatActivity {
 
         builder.addAction(actionBuilder.build());
 
+        //
+        // Wearable only section
+        //
+        NotificationCompat.WearableExtender extender = new NotificationCompat.WearableExtender();
+
+        // Add additional pages to the wearable
+        // Create a big text style for the second page
+        NotificationCompat.BigTextStyle secondPageStyle = new NotificationCompat.BigTextStyle();
+        secondPageStyle.setBigContentTitle("Page 2")
+                .bigText("A lot of text which will appear to the right");
+
+        // Create second page notification
+        Notification secondPageNotification =
+                new NotificationCompat.Builder(this)
+                        .setStyle(secondPageStyle)
+                        .build();
+
+        // Extend the notification builder with the second page
+        builder.extend(extender.addPage(secondPageNotification));
+
         // Add a wearable only action
         mapIntent = new Intent(Intent.ACTION_VIEW);
         geoUri = Uri.parse("geo:0,0?q=" + Uri.encode("01431"));
@@ -151,8 +172,13 @@ public class MainActivity extends AppCompatActivity {
                         getString(R.string.map_01431), mapPendingIntent)
                         .build();
 
-        builder.extend(new NotificationCompat.WearableExtender().addAction(action));
+        builder.extend(extender.addAction(action));
 
+        //
+        // End wearable only extension
+        //
+
+        // We are done now, time to send the noticiation
         // Get an instance of the NotificationManager service
         NotificationManagerCompat notificationManager =
                 NotificationManagerCompat.from(this);
