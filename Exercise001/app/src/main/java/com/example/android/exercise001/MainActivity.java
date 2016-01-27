@@ -22,7 +22,8 @@ public class MainActivity extends AppCompatActivity {
      * This value needs to be unique within this app, but it doesn't need to be
      * unique system-wide.
      */
-    public static final int NOTIFICATION_ID = 1;
+    public static int NOTIFICATION_ID = 1;
+    final static String GROUP_OF_NOTICATION = "group_key_emails";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,6 +140,8 @@ public class MainActivity extends AppCompatActivity {
 
         builder.addAction(actionBuilder.build());
 
+
+
         //
         // Wearable only section
         //
@@ -178,6 +181,13 @@ public class MainActivity extends AppCompatActivity {
         // End wearable only extension
         //
 
+        //
+        // Make each notification part of the same group
+        //
+        // Build the notification, setting the group appropriately
+        builder.setGroup(GROUP_OF_NOTICATION);
+
+
         // We are done now, time to send the noticiation
         // Get an instance of the NotificationManager service
         NotificationManagerCompat notificationManager =
@@ -191,5 +201,7 @@ public class MainActivity extends AppCompatActivity {
 
         notificationManager.notify(NOTIFICATION_ID, builder.build());
         // END_INCLUDE(send_notification)
+
+        NOTIFICATION_ID++;
     }
 }
